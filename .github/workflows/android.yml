@@ -1,0 +1,41 @@
+
+name: Build Prosa APK
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Extract project
+        run: |
+          unzip -q Prosa-APK-pelo-celular.zip -d source
+
+      - name: Build APK
+        run: |
+          cd source/ProsaAndroid
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Prosa-APK
+          path: source/ProsaAndroid/**/build/outputs/apk/debug/*.apk
+          
