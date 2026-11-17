@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download repository
+      - name: Download repositoryw
         uses: actions/checkout@v4
 
       - name: Prepare Java
@@ -21,7 +21,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: gradle
 
       - name: Extract project
         run: |
