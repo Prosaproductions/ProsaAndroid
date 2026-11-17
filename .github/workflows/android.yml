@@ -26,9 +26,16 @@ jobs:
         run: |
           unzip -q Prosa-APK-pelo-celular.zip -d source
 
+      
       - name: Build APK
         run: |
-          cd source/ProsaAndroid
+          PROJECT_DIR=$(find source -type f -name gradlew -print -quit | xargs -r dirname)
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "ERRO: gradlew não encontrado no ZIP"
+            find source -maxdepth 5 -type f
+            exit 1
+          fi
+          cd "$PROJECT_DIR"
           chmod +x gradlew
           ./gradlew assembleDebug
 
